@@ -8,17 +8,18 @@
 
 ## Project Description
 
-This project focuses on how to prepare data for machine learning
-by engineering and selecting features.
+In this project, I practiced turning raw data into better model inputs.
+I focused on feature engineering and feature selection because those steps
+have a big impact on model quality.
 
-We learn to:
+For this phase, I used the provided example workflow to:
 
-- handle missing values and outliers
-- encode categorical variables
-- scale and transform numeric features
-- select the features most likely to help a model
+- inspect data quality
+- build useful derived features
+- run a model end-to-end
+- verify results with logs and executed notebook output
 
-Good features matter a great deal. This project helps build that intuition.
+This helped me connect course concepts to a real, repeatable workflow.
 
 ## Example Notebook + Your Notebook
 
@@ -29,6 +30,56 @@ See [docs/your-files.md] for more.
 Links:
 
 - [ml_02_case.ipynb](notebooks/ml_02_case.ipynb)
+
+## How I Ran the Examples
+
+I ran the app and notebook examples from the project root folder using these commands:
+
+```shell
+uv run python -m mlstudio.app_case
+uv run jupyter nbconvert --to notebook --execute notebooks/ml_02_case.ipynb --output ml_02_case_ran.ipynb
+uv run jupyter nbconvert --to html notebooks/ml_02_case_ran.ipynb --output ml_02_case_ran.html
+```
+
+After confirming success, I saved and uploaded my results:
+
+```shell
+git add -A
+git commit -m "Run Phase 1 examples and add execution artifacts"
+git push origin main
+```
+
+## Example Results
+
+From my app run, I got these results:
+
+- dataset loaded: 10 rows, 6 columns
+- missing values: 0
+- duplicate rows: 0
+- model: LinearRegression
+- mean absolute error: 0.48
+- R-squared: 1.00
+- predicted score for sample case: 83.4
+
+Evidence files created by my run:
+
+- `project.log`
+- `notebooks/ml_02_case_ran.ipynb`
+- `notebooks/ml_02_case_ran.html`
+
+## What I Learned and Next Steps
+
+What I learned:
+
+- feature engineering changes what a model can learn
+- clean, readable logs make troubleshooting much easier
+- reproducible commands are important for sharing and grading
+
+Next steps I want to take:
+
+- run the same workflow on a different dataset
+- compare performance before and after adding engineered features
+- add a short discussion of which features helped most and why
 
 ## Working Files
 
