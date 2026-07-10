@@ -30,6 +30,9 @@ See [docs/your-files.md] for more.
 Links:
 
 - [ml_02_case.ipynb](notebooks/ml_02_case.ipynb)
+- [ml_02_crews.ipynb](notebooks/ml_02_crews.ipynb)
+- [ml_02_crews_ran.ipynb](notebooks/ml_02_crews_ran.ipynb)
+- [ml_02_crews_ran.html](notebooks/ml_02_crews_ran.html)
 
 ## How I Ran the Examples
 
@@ -39,6 +42,8 @@ I ran the app and notebook examples from the project root folder using these com
 uv run python -m mlstudio.app_case
 uv run jupyter nbconvert --to notebook --execute notebooks/ml_02_case.ipynb --output ml_02_case_ran.ipynb
 uv run jupyter nbconvert --to html notebooks/ml_02_case_ran.ipynb --output ml_02_case_ran.html
+uv run jupyter nbconvert --to notebook --execute notebooks/ml_02_crews.ipynb --output ml_02_crews_ran.ipynb
+uv run jupyter nbconvert --to html notebooks/ml_02_crews_ran.ipynb --output ml_02_crews_ran.html
 ```
 
 After confirming success, I saved and uploaded my results:

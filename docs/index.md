@@ -21,85 +21,160 @@ to get the example projects running on your machine.
 
 ## Phase 4. Technical Modification
 
-Describe your small technical modification to the example project.
+I made a small feature-engineering change in my custom notebook by adding
+`bill_area_mm2 = bill_length_mm * bill_depth_mm` to the existing derived features.
 
-Include:
+What changed:
 
-- What you changed
-- Why you chose that change
-- How you verified that it worked
-- What result, output, chart, metric, or behavior confirmed the change
+- Added one new engineered numeric feature (`bill_area_mm2`) in `notebooks/ml_02_crews.ipynb`.
+- Updated the opening notebook metadata (author/date) to reflect my custom work.
+- Re-ran and exported the executed notebook to `notebooks/ml_02_crews_ran.ipynb`
+	and `notebooks/ml_02_crews_ran.html`.
 
-Compared with the example project,
-explain what is different and why the change matters.
+Why I chose this change:
 
-Was it easy, or surprisingly challenging and why do you think so?
+- It is small and safe.
+- It uses only existing columns available at prediction time.
+- It avoids leakage because it does not use the target (`body_mass_g`).
+
+How I verified it worked:
+
+- Executed notebook output logs show:
+	- `Added features: ['bill_ratio', 'flipper_cm', 'bill_area_mm2', 'size_class']`
+	- `After features: 11`
+- The notebook executed successfully with updated outputs and visualizations.
+
+What result confirmed the change:
+
+- The project moved from 10 columns after feature construction to 11 columns.
+- The executed notebook includes the updated feature list and summary evidence.
+
+Compared with the example project, this modification introduces an additional
+shape-related signal (bill surface proxy) while keeping the same workflow style.
+I rated this modification as **easy to moderate**: implementation was easy,
+but making sure the feature was useful and non-leaking required careful reasoning.
 
 ## Phase 5. Custom Project
 
-Describe your custom project and how you made your modeling decisions.
-
-Be specific about what changed from the example project.
+My custom project applies the Module 2 feature workflow to the Seaborn penguins
+dataset and documents analyst choices for data usefulness and feature construction.
+Compared with the example, I changed the dataset and target context and created
+custom engineered features suitable for later regression modeling.
 
 ### Basis and Data
 
-Describe the dataset, input, or example you started with.
+I started from the provided module notebook pattern and used Seaborn's built-in
+`penguins` dataset (`sns.load_dataset("penguins")`).
 
-Include:
-
-- The original example dataset or input
-- The data source
-- Why you chose it, kept it, or changed it
-- Any important limitations or assumptions
+- Original example basis: the provided module workflow and notebook structure.
+- Data source: Seaborn sample dataset.
+- Why this choice: it is clean for learning, has mixed feature types, and is
+	appropriate for practicing feature quality checks.
+- Limitations/assumptions:
+	- Missing values exist in multiple columns.
+	- Dataset size is relatively small.
+	- This is educational data, so results are for learning workflow skills.
 
 ### Modeling Approach
 
-Describe the problem type and modeling approach for this project.
+This is a **supervised** ML setup because a target is explicitly chosen.
+It is a **regression-oriented** setup because the target is numeric.
 
-Include:
-
-- Is this supervised or unsupervised and how do you know
-- Is this classification, regression, clustering, recommendation, forecasting, or another type of ML task
-- What kind of target works well for this approach
-- Why your selected model or method is appropriate
+- Supervised vs unsupervised: supervised (target available in data).
+- Task type: regression.
+- Suitable target type: continuous numeric variable.
+- Why appropriate: engineered continuous and categorical predictors can support
+	later regression model fitting and interpretation.
 
 ### Target
 
-Describe the example target variable.
+The example notebook pattern demonstrates choosing a target first and evaluating
+usefulness/leakage risk against that target.
 
-Then describe your chosen target variable.
+My chosen target is `body_mass_g`.
 
-Explain how your target choice changes the modeling approach, interpretation, or evaluation.
+Choosing a continuous target means:
+
+- the likely model family is regression,
+- interpretation focuses on magnitude and direction of relationships,
+- evaluation in later phases should use regression metrics (for example MAE/RMSE/$R^2$).
 
 ### Features
 
-Describe the example features.
+The example feature section demonstrates constructing non-leaking derived inputs
+and validating them with logs/plots.
 
-Then describe the features you used to predict your target.
+For my custom project, I used and constructed:
 
-Explain what you changed, added, removed, or kept and why.
+- Base numeric columns (for structure and size signals).
+- `bill_ratio = bill_length_mm / bill_depth_mm`
+- `flipper_cm = flipper_length_mm / 10`
+- `bill_area_mm2 = bill_length_mm * bill_depth_mm` (Phase 4 technical addition)
+- `size_class` via binning flipper length into small/medium/large
+
+Why these features:
+
+- They capture shape and scale information in different ways.
+- They are available from predictors (no target leakage).
+- They support interpretable, domain-reasonable signals.
 
 ### Evaluation and Results
 
-Describe how you evaluated your model.
+In this module phase, evaluation focused on feature workflow evidence,
+and I also added a simple baseline-versus-engineered model comparison.
 
-Include:
+Before vs after feature engineering (LinearRegression, same split):
 
-- The metric or evidence you used
-- The main result
-- Whether the result was useful, interesting, surprising, or disappointing
-- Any weakness, limitation, or next improvement
+| Model | Rows Used | Features Used | MAE | RMSE | R2 |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Baseline features | 342 | 3 | 281.57 | 348.21 | 0.817 |
+| Engineered features | 342 | 8 | 260.80 | 326.49 | 0.839 |
+
+- Evidence used:
+	- completeness/type log output for each column,
+	- executed notebook artifact,
+	- before vs after comparison table,
+	- feature-construction log messages,
+	- count plot of constructed `size_class`.
+- Main result:
+	- feature set expanded to 11 columns after adding custom derived features,
+	- executed notebook confirms new feature creation and updated summary,
+	- engineered features improved MAE and RMSE and increased R2.
+- Interpretation:
+	- useful and expected; engineered columns were created successfully without leakage.
+- Limitation/next improvement:
+	- next step is fitting and comparing regression models to quantify whether
+		these engineered features improve predictive performance.
 
 ### Summary
 
-Summarize your custom project.
+I implemented a custom feature-engineering project by adapting the provided
+workflow to penguins data, selecting a numeric target, assessing data quality,
+and constructing multiple non-leaking derived features.
 
-Include:
+Results:
 
-- How you implemented your custom model
-- What results you got
-- What you learned
-- How well you exercised the skills covered in this project
-- What kinds of real problems you could apply these skills to in the future
+- Custom feature set created and validated in executed artifacts.
+- Notebook evidence confirms successful extension from example features.
 
-Display at least one image or screenshot showing your work.
+What I learned:
+
+- small technical changes can be made safely when re-running and validating outputs,
+- feature design requires analyst judgment,
+- leakage prevention must be explicit and documented.
+
+Skills exercised:
+
+- data assessment,
+- feature engineering,
+- reproducible execution and documentation.
+
+Future application:
+
+- educational performance prediction,
+- biological measurements and morphology analysis,
+- any tabular ML problem requiring interpretable feature construction.
+
+Evidence image:
+
+![Feature engineering evidence plot](./images/Figure_1.png)
